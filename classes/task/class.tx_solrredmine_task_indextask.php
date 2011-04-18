@@ -33,6 +33,18 @@
 class tx_solrredmine_task_IndexTask extends tx_scheduler_Task {
 
 	/**
+	 * A Solr service instance to interact with the Solr server
+	 *
+	 * @var	tx_solr_SolrService
+	 */
+	protected $solrConnection = NULL;
+
+	protected $redmineServer = '';
+	protected $solrServer = array();
+	protected $documentsToIndexLimit;
+
+
+	/**
 	 * constructor for class tx_solrnntp_scheduler_IndexTask
 	 */
 	public function __construct() {
@@ -41,6 +53,29 @@ class tx_solrredmine_task_IndexTask extends tx_scheduler_Task {
 
 	}
 
+	public function getRedmineServer() {
+		return $this->redmineServer;
+	}
+
+	public function setRedmineServer($redmineServer) {
+		$this->redmineServer = filter_var($redmineServer, FILTER_SANITIZE_URL);
+	}
+
+	public function getSolrServer() {
+		return $this->solrServer;
+	}
+
+	public function setSolrServer(array $server) {
+		$this->solrServer = $server;
+	}
+
+	public function getDocumentsToIndexLimit() {
+		return $this->documentsToIndexLimit;
+	}
+
+	public function setDocumentsToIndexLimit($limit) {
+		$this->documentsToIndexLimit = intval($limit);
+	}
 }
 
 
