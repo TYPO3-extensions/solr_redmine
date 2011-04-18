@@ -117,7 +117,7 @@ class tx_solrredmine_task_IndexTaskAdditionalFieldProvider implements tx_schedul
 		$result = FALSE;
 
 			// sanitize Redmine server
-		$submittedData['redmineServer'] = filter_var($submittedData['documentsToIndexLimit'], FILTER_SANITIZE_URL);
+		$submittedData['redmineServer'] = filter_var($submittedData['redmineServer'], FILTER_SANITIZE_URL);
 
 			// sanitize Solr server
 		$registry = t3lib_div::makeInstance('t3lib_Registry');
