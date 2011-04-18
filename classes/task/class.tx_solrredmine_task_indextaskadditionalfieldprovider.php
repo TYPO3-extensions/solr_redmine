@@ -33,8 +33,8 @@
 class tx_solrredmine_task_IndexTaskAdditionalFieldProvider implements tx_scheduler_AdditionalFieldProvider {
 
 	/**
-	 * Used to define fields to provide the Solr server address when adding
-	 * or editing a task.
+	 * Used to define fields to provide the Solr server address and processing
+	 * limit when adding or editing a task.
 	 *
 	 * @param	array					$taskInfo: reference to the array containing the info used in the add/edit form
 	 * @param	tx_scheduler_Task		$task: when editing, reference to the current task object. Null when adding.
@@ -44,23 +44,94 @@ class tx_solrredmine_task_IndexTaskAdditionalFieldProvider implements tx_schedul
 	 *									For each field it provides an associative sub-array with the following:
 	 */
 	public function getAdditionalFields(array &$taskInfo, $task, tx_scheduler_Module $schedulerModule) {
+		$additionalFields = array();
 
+		if ($schedulerModule->CMD == 'add') {
+			$taskInfo['redmineServer']         = '';
+			$taskInfo['solrServer']            = '';
+			$taskInfo['documentsToIndexLimit'] = 50;
+		}
+
+		if ($schedulerModule->CMD == 'edit') {
+			$server = $task->getSolrServer();
+
+			$taskInfo['redmineServer']         = $task->getRedmineServer();
+			$taskInfo['solrServer']            = $server['rootPageUid'] . '|' . $server['language'];
+			$taskInfo['documentsToIndexLimit'] = $task->getDocumentsToIndexLimit();
+		}
+
+		$additionalFields['redmineServer'] = array(
+			'code'     => '<input type="text" name="tx_scheduler[redmineServer]" value="' . $taskInfo['redmineServer'] . '" />',
+			'label'    => 'LLL:EXT:solr_redmine/lang/locallang.xml:schedulerFieldRedmineServer',
+			'cshKey'   => '',
+			'cshLabel' => ''
+		);
+
+		$additionalFields['solrServer'] = array(
+			'code'     => $this->getAvailableServersSelector($taskInfo['solrServer']),
+			'label'    => 'LLL:EXT:solr/lang/locallang.xml:scheduler_field_server',
+			'cshKey'   => '',
+			'cshLabel' => ''
+		);
+
+		$additionalFields['documentsToIndexLimit'] = array(
+			'code'     => '<input type="text" name="tx_scheduler[documentsToIndexLimit]" value="' . $taskInfo['documentsToIndexLimit'] . '" />',
+			'label'    => 'LLL:EXT:solr_redmine/lang/locallang.xml:schedulerFieldDocumentsToIndexLimit',
+			'cshKey'   => '',
+			'cshLabel' => ''
+		);
 
 		return $additionalFields;
 	}
 
+	protected function getAvailableServersSelector($selectedServer = '') {
+		$registry = t3lib_div::makeInstance('t3lib_Registry');
+		$servers  = $registry->get('tx_solr', 'servers', array());
+		$selector = '<select name="tx_scheduler[solrServer]">';
+
+		foreach ($servers as $key => $serverConnectionParameters) {
+			$selectedAttribute = '';
+			if ($key == $selectedServer) {
+				$selectedAttribute = ' selected="selected"';
+			}
+
+			$selector .= '<option value="' . $key . '"' . $selectedAttribute . '>'
+				. $serverConnectionParameters['label']
+				. '</option>';
+		}
+
+		$selector .= '</select>';
+
+		return $selector;
+	}
+
 	/**
 	 * Checks any additional data that is relevant to this task. If the task
-	 * class is not relevant, the method is expected to return true
+	 * class is not relevant, the method is expected to return TRUE
 	 *
 	 * @param	array					$submittedData: reference to the array containing the data submitted by the user
 	 * @param	tx_scheduler_module1	$parentObject: reference to the calling object (Scheduler's BE module)
-	 * @return	boolean					True if validation was ok (or selected class is not relevant), false otherwise
+	 * @return	boolean					True if validation was ok (or selected class is not relevant), FALSE otherwise
 	 */
 	public function validateAdditionalFields(array &$submittedData, tx_scheduler_Module $schedulerModule) {
+		$result = FALSE;
 
+			// sanitize Redmine server
+		$submittedData['redmineServer'] = filter_var($submittedData['documentsToIndexLimit'], FILTER_SANITIZE_URL);
 
-		return true;
+			// sanitize Solr server
+		$registry = t3lib_div::makeInstance('t3lib_Registry');
+		$servers  = $registry->get('tx_solr', 'servers', array());
+
+		$availableServers = array_keys($servers);
+		if (in_array($submittedData['solrServer'], $availableServers)) {
+			$result = TRUE;
+		}
+
+			// sanitize limit
+		$submittedData['documentsToIndexLimit'] = intval($submittedData['documentsToIndexLimit']);
+
+		return $result;
 	}
 
 	/**
@@ -71,7 +142,12 @@ class tx_solrredmine_task_IndexTaskAdditionalFieldProvider implements tx_schedul
 	 * @param	tx_scheduler_Task	$task: reference to the current task object
 	 */
 	public function saveAdditionalFields(array $submittedData, tx_scheduler_Task $task) {
+		$registry = t3lib_div::makeInstance('t3lib_Registry');
+		$servers  = $registry->get('tx_solr', 'servers', array());
 
+		$task->setRedmineServer($submittedData['redmineServer']);
+		$task->setSolrServer($servers[$submittedData['solrServer']]);
+		$task->setDocumentsToIndexLimit($submittedData['documentsToIndexLimit']);
 	}
 }
 

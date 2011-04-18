@@ -2,3 +2,4 @@
 
 	* Added initial code generated with kickstarter
 	* Added locallang.xml
+	* Added tx_solrredmine_task_IndexTaskAdditionalFieldProvider
