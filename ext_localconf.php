@@ -7,7 +7,7 @@ if (!defined ('TYPO3_MODE')) {
 	// adding scheduler tasks
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['tx_solrredmine_task_IndexTask'] = array(
 	'extension'        => $_EXTKEY,
-	'title'            => 'Redmine Solr Indexer',
+	'title'            => 'Solr Redmine Indexer',
 	'description'      => 'Indexes Redmine project data.',
 	'additionalFields' => 'tx_solrredmine_task_IndexTaskAdditionalFieldProvider'
 );
