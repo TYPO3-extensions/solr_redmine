@@ -1,0 +1,16 @@
+
+
+* there are some typo3.org specific fields in the Solr documents.
+	- feel free to remove them and provide a hook instead
+
+* currently indexes project information only
+
+* Redmine's REST API for project information is limited:
+	- hardcoded limit of 100 projects per request
+	- need to remove hardcoded limit in
+	- http://www.redmine.org/issues/7539
+	- see redmine_7539.diff
+
+	- projects sorted alphabetically instead by id
+	- can't do incremental indexing b/c of alphabetic sorting
+	- thus always doing full imports

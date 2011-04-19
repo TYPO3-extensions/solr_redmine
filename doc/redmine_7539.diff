@@ -1,0 +1,19 @@
+[root@svn /var/rails/forge.typo3.org]# git diff 8f80f361d984649ce61152d19d83d0d8f400d8bb^1
+diff --git a/app/controllers/application_controller.rb b/app/controllers/application_controller.rb
+index 803eb5f..7abd482 100644
+--- a/app/controllers/application_controller.rb
++++ b/app/controllers/application_controller.rb
+@@ -361,8 +361,10 @@ class ApplicationController < ActionController::Base
+     limit = options[:limit].to_i
+     if limit < 1
+       limit = 25
+-    elsif limit > 100
+-      limit = 100
++    # Workaround for http://www.redmine.org/issues/7539
++    # We need this for the SOLR import on typo3.org
++    # elsif limit > 100
++    #   limit = 100
+     end
+     if offset.nil? && options[:page].present?
+       offset = (options[:page].to_i - 1) * limit
+

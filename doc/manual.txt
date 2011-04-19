@@ -1,0 +1,6 @@
+
+* add the scheduler task "Solr Redmine Indexer"
+* set the Redmine server URL, f.e. http://www.redmine.org/
+* set an interval
+* set a high limit so that all projects are indexed with each run, 100000 should do I guess
+	- see known issues for Redmine's API limitations

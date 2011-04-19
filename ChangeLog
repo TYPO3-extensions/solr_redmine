@@ -2,6 +2,7 @@
 
 	* Added implementation of the projects indexer
 	* Fixed missing siteHash field in Solr documents
+	* Added some documentation
 
 2011-04-18  Ingo Renner  <ingo@typo3.org>
 
