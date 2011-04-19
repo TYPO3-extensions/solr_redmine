@@ -4,6 +4,8 @@
 	* Fixed missing siteHash field in Solr documents
 	* Added some documentation
 
+	* Changed version to 0.9.0 stable
+
 2011-04-18  Ingo Renner  <ingo@typo3.org>
 
 	* Added initial code generated with kickstarter
