@@ -140,8 +140,9 @@ class tx_solrredmine_task_IndexTask extends tx_scheduler_Task {
 				$project->id
 			)
 		);
-		$document->setField('appKey', 'EXT:solr_redmine');
-		$document->setField('type',   self::ITEM_TYPE_PROJECT);
+		$document->setField('appKey',   'EXT:solr_redmine');
+		$document->setField('type',     self::ITEM_TYPE_PROJECT);
+		$document->setField('siteHash', tx_solr_Util::getSiteHash($this->solrServer['rootPageUid']));
 
 			// content fields
 		$document->setField('uid',     $project->id);
