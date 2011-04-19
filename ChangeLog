@@ -1,3 +1,7 @@
+2011-04-19  Ingo Renner  <ingo@typo3.org>
+
+	* Added implementation of the projects indexer
+
 2011-04-18  Ingo Renner  <ingo@typo3.org>
 
 	* Added initial code generated with kickstarter
