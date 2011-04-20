@@ -61,7 +61,9 @@ class tx_solrredmine_task_IndexTask extends tx_scheduler_Task {
 		$this->solrConnection = t3lib_div::makeInstance('tx_solr_ConnectionManager')->getConnection(
 			$this->solrServer['solrHost'],
 			$this->solrServer['solrPort'],
-			$this->solrServer['solrPath']
+			$this->solrServer['solrPath'],
+			$this->solrServer['solrScheme'],
+			$this->solrServer['solrUseCurl']
 		);
 	}
 
