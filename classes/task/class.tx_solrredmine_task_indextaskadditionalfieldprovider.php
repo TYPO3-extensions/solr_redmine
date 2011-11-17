@@ -75,7 +75,7 @@ class tx_solrredmine_task_IndexTaskAdditionalFieldProvider implements tx_schedul
 		);
 
 		$additionalFields['documentsToIndexLimit'] = array(
-			'code'     => '<input type="text" name="tx_scheduler[documentsToIndexLimit]" value="' . $taskInfo['documentsToIndexLimit'] . '" />',
+			'code'     => '<input type="text" name="tx_scheduler[documentsToIndexLimit]" value="' . intval($taskInfo['documentsToIndexLimit']) . '" />',
 			'label'    => 'LLL:EXT:solr_redmine/lang/locallang.xml:schedulerFieldDocumentsToIndexLimit',
 			'cshKey'   => '',
 			'cshLabel' => ''

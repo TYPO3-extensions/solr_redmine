@@ -1,3 +1,7 @@
+2011-11-17  Ingo Renner  <ingo@typo3.org>
+
+	* Fixed issue #30965: added an intval when outputting the documents to index limit in the scheduler module
+
 2011-04-20  Ingo Renner  <ingo@typo3.org>
 
 	* Added support for curl HTTP transport
