@@ -162,7 +162,7 @@ class tx_solrredmine_task_IndexTask extends tx_scheduler_Task {
 			// typo3.org specific fields
 
 			// FIXME These are #t3o specific fields,
-			// for general purpose use add a hook to provide additional fields
+			// for general purpose use/add a hook or TS configuration to provide additional fields
 		$document->setField('site',             'http://forge.typo3.org');
 		$document->setField('siteName_stringS', 'forge_t3o');
 		$document->setField('language',         0);
