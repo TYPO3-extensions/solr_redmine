@@ -134,6 +134,8 @@ class tx_solrredmine_task_IndexTask extends tx_scheduler_Task {
 	protected function projectToDocument($project) {
 		$document = t3lib_div::makeInstance('Apache_Solr_Document');
 
+		$site = t3lib_div::makeInstance('tx_solr_Site', $this->solrServer['rootPageUid']);
+
 			// system fields
 		$document->setField('id',
 			tx_solr_Util::getDocumentId(
@@ -144,7 +146,7 @@ class tx_solrredmine_task_IndexTask extends tx_scheduler_Task {
 		);
 		$document->setField('appKey',   'EXT:solr_redmine');
 		$document->setField('type',     self::ITEM_TYPE_PROJECT);
-		$document->setField('siteHash', tx_solr_Util::getSiteHash($this->solrServer['rootPageUid']));
+		$document->setField('siteHash', $site->getSiteHash());
 
 			// content fields
 		$document->setField('uid',     $project->id);
